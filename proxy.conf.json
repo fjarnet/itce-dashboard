@@ -1,0 +1,7 @@
+{
+    "/api/": {
+        "target": "https://ptsv2.com",
+        "secure": false,
+        "changeOrigin": true
+    }
+}

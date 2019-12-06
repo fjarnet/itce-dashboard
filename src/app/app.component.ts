@@ -23,6 +23,8 @@ export class AppComponent {
     private databaseService: DatabaseService
   ) {
     this.socketService.initSocket();
+    //this.currentUser.firstName = 'John';
+    //this.currentUser.lastName = 'Doe';
 
     this.whoForm = new FormGroup({
       firstName: new FormControl(),

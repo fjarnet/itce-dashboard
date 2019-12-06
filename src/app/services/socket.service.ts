@@ -13,6 +13,7 @@ import { User } from 'src/app/model/user';
 })
 export class SocketService {
     private socket;
+    public currentUser: User;
 
     constructor(
         private databaseService: DatabaseService,
@@ -20,23 +21,22 @@ export class SocketService {
 
     public initSocket(): void {
         this.socket = socketIo(environment.databaseServer);
-        this.onMessage().subscribe((message: User) => {
-            message.firstName = 'Prénom';
-            message.lastName = 'Nom';
-            console.log(message);
-            this.databaseService.sendUserData(message).subscribe();
+        
+        // TODO
+        this.currentUser = {
+            _id: 2,
+            firstName: 'John',
+            lastName: 'Doe',
+            status: 'unknown'
+        }
+        this.socket.on('identity', (data: User) => {
+            this.currentUser = data;
+            console.log(this.currentUser);
         });
     }
 
     public send(message: Message): void {
         this.socket.emit('message', message);
-    }
-
-    public onMessage(): Observable<User> {
-        console.log('onMessage');
-        return new Observable<User>(observer => {
-            this.socket.on('identity', (data: User) => observer.next(data));
-        });
     }
 
     public onEvent(event: Event): Observable<any> {

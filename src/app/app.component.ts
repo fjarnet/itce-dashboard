@@ -15,7 +15,7 @@ export class AppComponent {
   //form;
   whoForm;
   faSave = faSave;
-  currentUser: User;
+  currentUser;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,12 +23,11 @@ export class AppComponent {
     private databaseService: DatabaseService
   ) {
     this.socketService.initSocket();
-    //this.currentUser.firstName = 'John';
-    //this.currentUser.lastName = 'Doe';
+    this.currentUser = this.socketService.currentUser;
 
     this.whoForm = new FormGroup({
-      firstName: new FormControl(),
-      lastName: new FormControl()
+      firstName: new FormControl(this.currentUser.firstName),
+      lastName: new FormControl(this.currentUser.lastName)
    });
 
     //this.form = this.formBuilder.group({
@@ -37,10 +36,19 @@ export class AppComponent {
     //});
   }
 
+  userIsAnonymous() {
+    return this.currentUser.status == 'unknown';
+  }
+
+  userIsLoggedIn() {
+    return this.currentUser.status == 'known';
+  }
+
   onSubmit(formData) {
-    this.currentUser._id = 2;
-    this.currentUser.firstName = formData.firstName;
-    this.currentUser.lastName = formData.lastName;
-    this.databaseService.sendUserData(this.currentUser).subscribe();
+    this.databaseService.sendUserData({
+      _id: this.socketService.currentUser._id,
+      firstName: formData.firstName,
+      lastName: formData.lastName
+    }).subscribe();
   }
 }

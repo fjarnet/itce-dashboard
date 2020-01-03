@@ -21,14 +21,16 @@ export class SocketService {
 
     public initSocket(): void {
         this.socket = socketIo(environment.databaseServer);
-        
+        this.currentUser = {} as User;
+        //this.currentUser.status = 'unknown';
+        //this.currentUser.firstName = 'plop';
         // TODO
-        this.currentUser = {
-            _id: 2,
-            firstName: 'John',
-            lastName: 'Doe',
-            status: 'unknown'
-        }
+        //this.currentUser = {
+        //    _id: 2,
+        //    firstName: '',
+        //    lastName: '',
+        //    status: 'unknown'
+        //}
         this.socket.on('identity', (data: User) => {
             this.currentUser = data;
             console.log(this.currentUser);

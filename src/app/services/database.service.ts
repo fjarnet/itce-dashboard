@@ -16,11 +16,10 @@ export class DatabaseService {
   constructor(private http: HttpClient) { }
 
   sendUserData(userData):Observable<User> {
+    userData.status = 'known';
     console.warn(userData);
 
-    return this.http.put<User>(this.apiUrl, userData).pipe(
-      catchError(error => error)
-    );
+    return this.http.put<User>(this.apiUrl, userData);
   }
 
   private handleError(error: HttpErrorResponse) {

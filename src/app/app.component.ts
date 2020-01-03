@@ -37,15 +37,17 @@ export class AppComponent {
   }
 
   userIsAnonymous() {
+    return true;
     return this.currentUser.status == 'unknown';
   }
 
   userIsLoggedIn() {
-    return this.currentUser.status == 'known';
+    return true;
+    return this.currentUser.status != 'unknown';
   }
 
   onSubmit(formData) {
-    this.databaseService.sendUserData({
+    let databaseStatus = this.databaseService.sendUserData({
       _id: this.socketService.currentUser._id,
       firstName: formData.firstName,
       lastName: formData.lastName
